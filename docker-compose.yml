@@ -1,0 +1,17 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: social-hub-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: social_hub
+      MYSQL_USER: socialhub
+      MYSQL_PASSWORD: socialhubpassword
+    ports:
+      - "3308:3306"
+    volumes:
+      - social_hub_mysql_data:/var/lib/mysql
+
+volumes:
+  social_hub_mysql_data:
