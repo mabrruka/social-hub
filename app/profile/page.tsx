@@ -1,16 +1,48 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
+type User = {
+  firstName: string;
+  lastName: string;
+  username: string;
+  bio: string | null;
+};
+
 export default function ProfilePage() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+        .then((response) => response.json())
+        .then((data) => {
+          setUser(data.user);
+        });
+  }, []);
+
+  if (!user) {
+    return (
+        <main className="min-h-screen bg-gray-50">
+          <div className="flex min-h-screen items-center justify-center">
+            <p className="text-sm text-gray-500">
+              Loading profile...
+            </p>
+          </div>
+        </main>
+    );
+  }
+
+  const initials =
+      `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+
   return (
       <main className="min-h-screen bg-gray-50">
-        {/* Header */}
         <header className="border-b border-gray-200 bg-white">
           <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
             <Link
                 href="/home"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-gray-700 transition hover:bg-gray-100"
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-100"
             >
               ←
             </Link>
@@ -21,7 +53,7 @@ export default function ProfilePage() {
 
             <Link
                 href="/settings"
-                className="rounded-xl px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100"
+                className="rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100"
             >
               Settings
             </Link>
@@ -29,69 +61,50 @@ export default function ProfilePage() {
         </header>
 
         <div className="mx-auto max-w-3xl px-4 py-8">
-          {/* Profile card */}
-          <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-              {/* Avatar */}
+          <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+            <div className="flex flex-col gap-6 sm:flex-row">
               <div className="flex justify-center sm:justify-start">
                 <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gray-200 text-3xl font-bold text-gray-600">
-                  SH
+                  {initials}
                 </div>
               </div>
 
-              {/* Profile information */}
               <div className="flex-1 text-center sm:text-left">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      Your Name
-                    </h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {user.firstName} {user.lastName}
+                </h2>
 
-                    <p className="text-sm text-gray-500">
-                      @username
-                    </p>
-                  </div>
-
-                  <Link
-                      href="/settings"
-                      className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
-                  >
-                    Edit profile
-                  </Link>
-                </div>
-
-                <p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-gray-600 sm:mx-0">
-                  Welcome to my Social Hub profile. This is where
-                  your bio will appear.
+                <p className="mt-1 text-sm text-gray-500">
+                  @{user.username}
                 </p>
 
-                {/* Stats */}
+                <p className="mt-4 text-sm text-gray-600">
+                  {user.bio || "No bio yet."}
+                </p>
+
                 <div className="mt-6 flex justify-center gap-8 sm:justify-start">
-                  <div className="text-center">
+                  <div>
                     <p className="text-lg font-bold text-gray-900">
                       0
                     </p>
-
                     <p className="text-xs text-gray-500">
                       Posts
                     </p>
                   </div>
 
-                  <div className="text-center">
+                  <div>
                     <p className="text-lg font-bold text-gray-900">
                       0
                     </p>
-
                     <p className="text-xs text-gray-500">
                       Followers
                     </p>
                   </div>
 
-                  <div className="text-center">
+                  <div>
                     <p className="text-lg font-bold text-gray-900">
                       0
                     </p>
-
                     <p className="text-xs text-gray-500">
                       Following
                     </p>
@@ -101,7 +114,6 @@ export default function ProfilePage() {
             </div>
           </section>
 
-          {/* Posts */}
           <section className="mt-6">
             <div className="border-b border-gray-200">
               <h2 className="pb-4 text-sm font-semibold uppercase tracking-wide text-gray-900">
@@ -124,7 +136,7 @@ export default function ProfilePage() {
 
               <Link
                   href="/create-post"
-                  className="mt-5 inline-block rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
+                  className="mt-5 inline-block rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white hover:bg-gray-800"
               >
                 Create a post
               </Link>

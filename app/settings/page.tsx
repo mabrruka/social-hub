@@ -12,12 +12,16 @@ export default function SettingsPage() {
     setLoggingOut(true);
 
     try {
-      await fetch("/api/auth/logout", {
+      const response = await fetch("/api/auth/logout", {
         method: "POST",
       });
 
-      router.push("/signin");
-      router.refresh();
+      if (response.ok) {
+        router.push("/signin");
+        router.refresh();
+      } else {
+        setLoggingOut(false);
+      }
     } catch {
       setLoggingOut(false);
     }
@@ -25,11 +29,10 @@ export default function SettingsPage() {
 
   return (
       <main className="min-h-screen bg-gray-50">
-        {/* Header */}
         <header className="border-b border-gray-200 bg-white">
           <div className="mx-auto flex h-16 max-w-3xl items-center gap-4 px-4">
             <Link
-                href="/home"
+                href="/profile"
                 className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-gray-700 transition hover:bg-gray-100"
             >
               ←
@@ -70,23 +73,31 @@ export default function SettingsPage() {
                     </p>
                   </div>
 
-                  <span className="text-gray-400">→</span>
+                  <span className="text-gray-400">
+                  →
+                </span>
                 </Link>
 
                 <div className="flex items-center justify-between px-5 py-4">
                   <div>
                     <p className="text-sm font-medium text-gray-900">
-                      Email
+                      Password
                     </p>
 
                     <p className="mt-1 text-xs text-gray-500">
-                      Your email address is managed securely.
+                      Change your password to keep your account secure.
                     </p>
                   </div>
 
-                  <span className="text-sm text-gray-400">
-                  Account email
-                </span>
+                  <button
+                      type="button"
+                      className="rounded-xl border border-gray-300 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                      onClick={() =>
+                          alert("Password changing will be connected next.")
+                      }
+                  >
+                    Change
+                  </button>
                 </div>
               </div>
             </section>
@@ -99,7 +110,7 @@ export default function SettingsPage() {
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-500">
-                  Customize your Social Hub experience.
+                  Manage how Social Hub works for you.
                 </p>
               </div>
 
@@ -115,7 +126,7 @@ export default function SettingsPage() {
                     </p>
                   </div>
 
-                  <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+                  <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
                   On
                 </span>
                 </div>
@@ -123,11 +134,11 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between px-5 py-4">
                   <div>
                     <p className="text-sm font-medium text-gray-900">
-                      Privacy
+                      Profile visibility
                     </p>
 
                     <p className="mt-1 text-xs text-gray-500">
-                      Your account and posts are currently public.
+                      Your profile is currently visible to other users.
                     </p>
                   </div>
 
@@ -138,7 +149,32 @@ export default function SettingsPage() {
               </div>
             </section>
 
-            {/* Logout */}
+            {/* Navigation */}
+            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <h2 className="font-semibold text-gray-900">
+                More
+              </h2>
+
+              <div className="mt-4 space-y-2">
+                <Link
+                    href="/notifications"
+                    className="flex items-center justify-between rounded-xl px-3 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
+                >
+                  <span>Notifications</span>
+                  <span className="text-gray-400">→</span>
+                </Link>
+
+                <Link
+                    href="/home"
+                    className="flex items-center justify-between rounded-xl px-3 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
+                >
+                  <span>Back to Home</span>
+                  <span className="text-gray-400">→</span>
+                </Link>
+              </div>
+            </section>
+
+            {/* Sign out */}
             <section className="rounded-2xl border border-red-100 bg-white p-5 shadow-sm">
               <h2 className="font-semibold text-gray-900">
                 Sign out
