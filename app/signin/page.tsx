@@ -4,12 +4,21 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
+
+const COLORS = {
+  background: "#F8F8F4",
+  beige: "#E7E7DD",
+  text: "#210303",
+  brown: "#6B5B4D",
+};
 
 export default function SignInPage() {
   const router = useRouter();
 
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -26,7 +35,7 @@ export default function SignInPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          login,
+          login: login.trim(),
           password,
         }),
       });
@@ -39,101 +48,163 @@ export default function SignInPage() {
       }
 
       router.push("/home");
+      router.refresh();
     } catch {
-      setError("Unable to connect to Social Hub.");
+      setError("Unable to connect to Social Hub. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10">
-      <div className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-md items-center">
-        <div className="w-full">
+      <main
+          className="flex min-h-screen items-center justify-center px-4 py-10"
+          style={{ backgroundColor: COLORS.background }}
+      >
+        <div className="w-full max-w-md">
+          {/* Brand */}
           <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-black text-xl font-bold text-white">
-              SH
-            </div>
-
-            <h1 className="text-3xl font-bold text-gray-900">
-              Welcome back
-            </h1>
-
-            <p className="mt-2 text-gray-500">
-              Sign in to continue to Social Hub.
-            </p>
+            <Link
+                href="/welcome"
+                className="inline-block text-4xl font-bold tracking-tight sm:text-5xl"
+                style={{
+                  color: COLORS.text,
+                  fontFamily: "'Calgary', Georgia, serif",
+                }}
+            >
+              Social Hub
+            </Link>
           </div>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 sm:p-8">
-            <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Sign-in card */}
+          <div
+              className="rounded-3xl border p-6 shadow-sm sm:p-9"
+              style={{
+                backgroundColor: "rgba(231, 231, 221, 0.55)",
+                borderColor: "rgba(33, 3, 3, 0.12)",
+              }}
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Username or email */}
               <div>
                 <label
-                  htmlFor="login"
-                  className="mb-2 block text-sm font-medium text-gray-700"
+                    htmlFor="login"
+                    className="mb-2 block text-sm font-bold"
+                    style={{ color: COLORS.brown }}
                 >
                   Username or email
                 </label>
 
                 <input
-                  id="login"
-                  type="text"
-                  value={login}
-                  onChange={(event) => setLogin(event.target.value)}
-                  placeholder="johndoe or john@example.com"
-                  required
-                  autoComplete="username"
-                  className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black placeholder:text-gray-500 outline-none transition focus:border-black focus:ring-1 focus:ring-black"
+                    id="login"
+                    type="text"
+                    value={login}
+                    onChange={(event) => setLogin(event.target.value)}
+                    placeholder="Enter your username or email"
+                    required
+                    autoComplete="username"
+                    className="w-full rounded-xl border bg-white/80 px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:ring-2"
+                    style={{
+                      borderColor: "rgba(33, 3, 3, 0.18)",
+                      color: COLORS.text,
+                      outlineColor: COLORS.text,
+                    }}
                 />
               </div>
 
+              {/* Password */}
               <div>
                 <label
-                  htmlFor="password"
-                  className="mb-2 block text-sm font-medium text-gray-700"
+                    htmlFor="password"
+                    className="mb-2 block text-sm font-bold"
+                    style={{ color: COLORS.brown }}
                 >
                   Password
                 </label>
 
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  placeholder="Enter your password"
-                  required
-                  autoComplete="current-password"
-                  className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black placeholder:text-gray-500 outline-none transition focus:border-black focus:ring-1 focus:ring-black"
-                />
+                <div className="relative">
+                  <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      placeholder="Enter your password"
+                      required
+                      autoComplete="current-password"
+                      className="w-full rounded-xl border bg-white/80 px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-gray-400 focus:ring-2"
+                      style={{
+                        borderColor: "rgba(33, 3, 3, 0.18)",
+                        color: COLORS.text,
+                      }}
+                  />
+
+                  <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 transition hover:bg-black/5"
+                      style={{ color: COLORS.brown }}
+                  >
+                    {showPassword ? (
+                        <EyeOff size={19} />
+                    ) : (
+                        <Eye size={19} />
+                    )}
+                  </button>
+                </div>
               </div>
 
+              {/* Error message */}
               {error && (
-                <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-                  {error}
-                </div>
+                  <div
+                      role="alert"
+                      className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+                  >
+                    {error}
+                  </div>
               )}
 
+              {/* Submit */}
               <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-xl bg-black px-6 py-3.5 font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  type="submit"
+                  disabled={loading}
+                  className="w-full rounded-xl px-6 py-3.5 font-semibold transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                  style={{
+                    backgroundColor: COLORS.text,
+                    color: COLORS.beige,
+                  }}
               >
                 {loading ? "Signing in..." : "Sign in"}
               </button>
             </form>
 
-            <div className="mt-6 border-t border-gray-100 pt-6 text-center text-sm text-gray-500">
-              Don't have an account?{" "}
+            {/* Sign-up link */}
+            <div
+                className="mt-6 border-t pt-6 text-center text-sm"
+                style={{
+                  borderColor: "rgba(33, 3, 3, 0.12)",
+                  color: COLORS.brown,
+                }}
+            >
+              Don&apos;t have an account?{" "}
               <Link
-                href="/signup"
-                className="font-semibold text-gray-900 hover:underline"
+                  href="/signup"
+                  className="font-bold underline-offset-4 hover:underline"
+                  style={{ color: COLORS.text }}
               >
                 Create an account
               </Link>
             </div>
           </div>
+
+          {/* Footer */}
+          <p
+              className="mt-6 text-center text-xs"
+              style={{ color: COLORS.brown }}
+          >
+            Connect with your community on Social Hub.
+          </p>
         </div>
-      </div>
-    </main>
+      </main>
   );
 }
-

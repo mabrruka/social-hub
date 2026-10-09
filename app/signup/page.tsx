@@ -1,13 +1,32 @@
+
 "use client";
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
+
+const COLORS = {
+  background: "#F8F8F4",
+  beige: "#E7E7DD",
+  text: "#210303",
+  brown: "#6B5B4D",
+};
+
+type SignupForm = {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  dateOfBirth: string;
+};
 
 export default function SignUpPage() {
   const router = useRouter();
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<SignupForm>({
     firstName: "",
     lastName: "",
     username: "",
@@ -17,10 +36,12 @@ export default function SignUpPage() {
     dateOfBirth: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function updateField(field: string, value: string) {
+  function updateField(field: keyof SignupForm, value: string) {
     setForm((current) => ({
       ...current,
       [field]: value,
@@ -29,8 +50,18 @@ export default function SignUpPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     setError("");
+
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    if (form.password.length < 8) {
+      setError("Your password must be at least 8 characters long.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -45,45 +76,65 @@ export default function SignUpPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || "Something went wrong.");
+        setError(data.error || "Unable to create your account.");
         return;
       }
 
       router.push("/welcome");
+      router.refresh();
     } catch {
-      setError("Unable to connect to Social Hub.");
+      setError("Unable to connect to Social Hub. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
   const inputClassName =
-      "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black placeholder:text-gray-500 outline-none transition focus:border-black focus:ring-1 focus:ring-black";
+      "w-full rounded-xl border bg-white/80 px-4 py-3 text-sm outline-none transition placeholder:text-gray-400 focus:ring-2";
+
+  const labelClassName = "mb-2 block text-sm font-bold";
+
+  const inputStyle = {
+    borderColor: "rgba(33, 3, 3, 0.18)",
+    color: COLORS.text,
+  };
 
   return (
-      <main className="min-h-screen bg-gray-50 px-4 py-10">
-        <div className="mx-auto w-full max-w-lg">
+      <main
+          className="flex min-h-screen items-center justify-center px-4 py-10"
+          style={{ backgroundColor: COLORS.background }}
+      >
+        <div className="w-full max-w-lg">
+          {/* Brand */}
           <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-black text-xl font-bold text-white">
-              SH
-            </div>
-
-            <h1 className="text-3xl font-bold text-gray-900">
-              Create your account
-            </h1>
-
-            <p className="mt-2 text-gray-500">
-              Join Social Hub and connect with your community.
-            </p>
+            <Link
+                href="/welcome"
+                className="inline-block text-4xl font-bold tracking-tight sm:text-5xl"
+                style={{
+                  color: COLORS.text,
+                  fontFamily: "'Calgary', Georgia, serif",
+                }}
+            >
+              Social Hub
+            </Link>
           </div>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 sm:p-8">
+          {/* Signup card */}
+          <div
+              className="rounded-3xl border p-6 shadow-sm sm:p-8"
+              style={{
+                backgroundColor: "rgba(231, 231, 221, 0.55)",
+                borderColor: "rgba(33, 3, 3, 0.12)",
+              }}
+          >
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* First and last name */}
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label
                       htmlFor="firstName"
-                      className="mb-2 block text-sm font-medium text-gray-700"
+                      className={labelClassName}
+                      style={{ color: COLORS.brown }}
                   >
                     First name
                   </label>
@@ -99,13 +150,15 @@ export default function SignUpPage() {
                       required
                       autoComplete="given-name"
                       className={inputClassName}
+                      style={inputStyle}
                   />
                 </div>
 
                 <div>
                   <label
                       htmlFor="lastName"
-                      className="mb-2 block text-sm font-medium text-gray-700"
+                      className={labelClassName}
+                      style={{ color: COLORS.brown }}
                   >
                     Last name
                   </label>
@@ -121,14 +174,17 @@ export default function SignUpPage() {
                       required
                       autoComplete="family-name"
                       className={inputClassName}
+                      style={inputStyle}
                   />
                 </div>
               </div>
 
+              {/* Username */}
               <div>
                 <label
                     htmlFor="username"
-                    className="mb-2 block text-sm font-medium text-gray-700"
+                    className={labelClassName}
+                    style={{ color: COLORS.brown }}
                 >
                   Username
                 </label>
@@ -144,13 +200,16 @@ export default function SignUpPage() {
                     required
                     autoComplete="username"
                     className={inputClassName}
+                    style={inputStyle}
                 />
               </div>
 
+              {/* Email */}
               <div>
                 <label
                     htmlFor="email"
-                    className="mb-2 block text-sm font-medium text-gray-700"
+                    className={labelClassName}
+                    style={{ color: COLORS.brown }}
                 >
                   Email
                 </label>
@@ -166,59 +225,108 @@ export default function SignUpPage() {
                     required
                     autoComplete="email"
                     className={inputClassName}
+                    style={inputStyle}
                 />
               </div>
 
+              {/* Password */}
               <div>
                 <label
                     htmlFor="password"
-                    className="mb-2 block text-sm font-medium text-gray-700"
+                    className={labelClassName}
+                    style={{ color: COLORS.brown }}
                 >
                   Password
                 </label>
 
-                <input
-                    id="password"
-                    type="password"
-                    value={form.password}
-                    onChange={(event) =>
-                        updateField("password", event.target.value)
-                    }
-                    placeholder="At least 8 characters"
-                    required
-                    minLength={8}
-                    autoComplete="new-password"
-                    className={inputClassName}
-                />
+                <div className="relative">
+                  <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={form.password}
+                      onChange={(event) =>
+                          updateField("password", event.target.value)
+                      }
+                      placeholder="At least 8 characters"
+                      required
+                      minLength={8}
+                      autoComplete="new-password"
+                      className={`${inputClassName} pr-12`}
+                      style={inputStyle}
+                  />
+
+                  <button
+                      type="button"
+                      onClick={() => setShowPassword((current) => !current)}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 transition hover:bg-black/5"
+                      style={{ color: COLORS.brown }}
+                  >
+                    {showPassword ? (
+                        <EyeOff size={18} />
+                    ) : (
+                        <Eye size={18} />
+                    )}
+                  </button>
+                </div>
+
+                <p className="mt-2 text-xs" style={{ color: COLORS.brown }}>
+                  Use at least 8 characters.
+                </p>
               </div>
 
+              {/* Confirm password */}
               <div>
                 <label
                     htmlFor="confirmPassword"
-                    className="mb-2 block text-sm font-medium text-gray-700"
+                    className={labelClassName}
+                    style={{ color: COLORS.brown }}
                 >
                   Confirm password
                 </label>
 
-                <input
-                    id="confirmPassword"
-                    type="password"
-                    value={form.confirmPassword}
-                    onChange={(event) =>
-                        updateField("confirmPassword", event.target.value)
-                    }
-                    placeholder="Enter your password again"
-                    required
-                    minLength={8}
-                    autoComplete="new-password"
-                    className={inputClassName}
-                />
+                <div className="relative">
+                  <input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={form.confirmPassword}
+                      onChange={(event) =>
+                          updateField("confirmPassword", event.target.value)
+                      }
+                      placeholder="Enter your password again"
+                      required
+                      minLength={8}
+                      autoComplete="new-password"
+                      className={`${inputClassName} pr-12`}
+                      style={inputStyle}
+                  />
+
+                  <button
+                      type="button"
+                      onClick={() =>
+                          setShowConfirmPassword((current) => !current)
+                      }
+                      aria-label={
+                        showConfirmPassword ? "Hide password" : "Show password"
+                      }
+                      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 transition hover:bg-black/5"
+                      style={{ color: COLORS.brown }}
+                  >
+                    {showConfirmPassword ? (
+                        <EyeOff size={18} />
+                    ) : (
+                        <Eye size={18} />
+                    )}
+                  </button>
+                </div>
               </div>
 
+              {/* Date of birth */}
               <div>
                 <label
                     htmlFor="dateOfBirth"
-                    className="mb-2 block text-sm font-medium text-gray-700"
+                    className={labelClassName}
+                    style={{ color: COLORS.brown }}
                 >
                   Date of birth
                 </label>
@@ -231,39 +339,67 @@ export default function SignUpPage() {
                         updateField("dateOfBirth", event.target.value)
                     }
                     required
+                    autoComplete="bday"
+                    max={new Date().toISOString().split("T")[0]}
                     className={inputClassName}
+                    style={inputStyle}
                 />
 
-                <p className="mt-2 text-xs text-gray-500">
+                <p className="mt-2 text-xs" style={{ color: COLORS.brown }}>
                   You must be at least 13 years old to use Social Hub.
                 </p>
               </div>
 
+              {/* Error message */}
               {error && (
-                  <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                  <div
+                      role="alert"
+                      className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+                  >
                     {error}
                   </div>
               )}
 
+              {/* Submit */}
               <button
                   type="submit"
                   disabled={loading}
-                  className="w-full rounded-xl bg-black px-6 py-3.5 font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full rounded-xl px-6 py-3.5 font-semibold transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                  style={{
+                    backgroundColor: COLORS.text,
+                    color: COLORS.beige,
+                  }}
               >
                 {loading ? "Creating account..." : "Create account"}
               </button>
             </form>
 
-            <div className="mt-6 border-t border-gray-100 pt-6 text-center text-sm text-gray-500">
+            {/* Sign-in link */}
+            <div
+                className="mt-6 border-t pt-6 text-center text-sm"
+                style={{
+                  borderColor: "rgba(33, 3, 3, 0.12)",
+                  color: COLORS.brown,
+                }}
+            >
               Already have an account?{" "}
               <Link
                   href="/signin"
-                  className="font-semibold text-gray-900 hover:underline"
+                  className="font-bold underline-offset-4 hover:underline"
+                  style={{ color: COLORS.text }}
               >
                 Sign in
               </Link>
             </div>
           </div>
+
+          {/* Footer */}
+          <p
+              className="mt-6 text-center text-xs"
+              style={{ color: COLORS.brown }}
+          >
+            Join your community on Social Hub.
+          </p>
         </div>
       </main>
   );
