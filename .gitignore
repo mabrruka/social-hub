@@ -39,3 +39,43 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local IDE settings
+.idea/
+
+# Optional AI coding tool files
+.claude/
+.cursor/
+.devin/
+agents/skills/
+AGENTS.md
+CLAUDE.md
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Generated files and dependencies
+node_modules/
+.next/
+
+# Local IDE settings
+.idea/
+
+# Optional AI coding tool files
+.claude/
+.cursor/
+.devin/
+agents/skills/
+AGENTS.md
+CLAUDE.md
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Generated files and dependencies
+node_modules/
+.next/
