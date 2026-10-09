@@ -3,154 +3,247 @@
 import Link from "next/link";
 
 export default function HomePage() {
+    const headingFont = {
+        fontFamily: "'Times New Roman', Times, serif",
+    };
+
+    const bodyFont = {
+        fontFamily: "'Source Sans Pro', Arial, sans-serif",
+        fontWeight: 400,
+    };
+
     return (
-        <main className="min-h-screen bg-gray-50">
+        <main
+            className="min-h-screen bg-[#E1D8CC] text-[#2B0505]"
+            style={bodyFont}
+        >
             {/* Header */}
-            <header className="sticky top-0 z-10 border-b border-gray-200 bg-white">
-                <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+            <header className="sticky top-0 z-20 border-b border-[#2B0505]/10 bg-[#E1D8CC]/95 backdrop-blur-md">
+                <div className="mx-auto flex min-h-[76px] max-w-7xl items-center justify-between gap-4 px-5 sm:px-8">
                     <Link
                         href="/home"
-                        className="flex items-center gap-3"
+                        className="shrink-0"
+                        aria-label="Social Hub home"
                     >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-sm font-bold text-white">
-                            SH
-                        </div>
-
-                        <span className="hidden text-xl font-bold text-gray-900 sm:block">
-              Social Hub
-            </span>
+                        <span
+                            className="text-2xl font-bold tracking-tight text-[#2B0505] sm:text-3xl"
+                            style={headingFont}
+                        >
+                            Social Hub
+                        </span>
                     </Link>
 
-                    <div className="flex items-center gap-2">
+                    <nav
+                        aria-label="Main navigation"
+                        className="flex items-center gap-1 sm:gap-3"
+                    >
                         <Link
                             href="/search"
-                            className="rounded-xl px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+                            className="rounded-full px-3 py-2 text-sm text-[#2B0505]/80 transition hover:bg-[#797454]/15 hover:text-[#2B0505] sm:px-4"
                         >
                             Search
                         </Link>
 
                         <Link
                             href="/notifications"
-                            className="rounded-xl px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+                            className="rounded-full px-3 py-2 text-sm text-[#2B0505]/80 transition hover:bg-[#797454]/15 hover:text-[#2B0505] sm:px-4"
                         >
                             Notifications
                         </Link>
 
                         <Link
                             href="/profile"
-                            className="rounded-xl px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+                            className="rounded-full border border-[#797454]/40 px-3 py-2 text-sm text-[#2B0505] transition hover:bg-[#797454]/15 sm:px-5"
                         >
                             Profile
                         </Link>
-                    </div>
+                    </nav>
                 </div>
             </header>
 
-            {/* Main content */}
-            <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 lg:grid-cols-[1fr_320px]">
+            {/* Page content */}
+            <div className="mx-auto grid max-w-7xl gap-8 px-5 py-8 sm:px-8 sm:py-12 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
                 {/* Feed */}
-                <section>
-                    <div className="mb-6 flex items-center justify-between">
+                <section className="min-w-0">
+                    <div className="mb-8 flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end">
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900">
+                            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#797454]">
+                                YOUR COMMUNITY
+                            </p>
+
+                            <h1
+                                className="text-4xl font-bold tracking-tight text-[#2B0505] sm:text-5xl"
+                                style={headingFont}
+                            >
                                 Home
                             </h1>
 
-                            <p className="mt-1 text-sm text-gray-500">
+                            <p className="mt-3 text-base text-[#2B0505]/65">
                                 Posts from people you follow
                             </p>
                         </div>
 
                         <Link
                             href="/create-post"
-                            className="rounded-xl bg-black px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800"
+                            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#797454] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#686346] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#797454] focus:ring-offset-2 focus:ring-offset-[#E1D8CC]"
                         >
-                            + Create post
+                            Create post
                         </Link>
                     </div>
 
                     {/* Empty feed */}
-                    <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
-                        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100 text-2xl">
-                            📷
-                        </div>
+                    <div className="overflow-hidden rounded-3xl border border-[#797454]/20 bg-[#F5EFE7] shadow-[0_8px_30px_rgba(43,5,5,0.04)]">
+                        <div className="h-1.5 bg-[#797454]" />
 
-                        <h2 className="mt-5 text-xl font-semibold text-gray-900">
-                            Your feed is empty
-                        </h2>
+                        <div className="px-6 py-14 text-center sm:px-12 sm:py-20">
+                            <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full border border-[#797454]/25 bg-[#E1D8CC]">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="32"
+                                    height="32"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#797454"
+                                    strokeWidth="1.4"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="3"
+                                        y="3"
+                                        width="18"
+                                        height="18"
+                                        rx="3"
+                                    />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <path d="m21 15-5-5L5 21" />
+                                </svg>
+                            </div>
 
-                        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
-                            Follow some people to see their posts here.
-                            You can also create your own post and share
-                            something with the Social Hub community.
-                        </p>
-
-                        <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-                            <Link
-                                href="/search"
-                                className="rounded-xl border border-gray-300 px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+                            <h2
+                                className="text-3xl font-bold tracking-tight text-[#2B0505] sm:text-4xl"
+                                style={headingFont}
                             >
-                                Find people
-                            </Link>
-
-                            <Link
-                                href="/create-post"
-                                className="rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
-                            >
-                                Create a post
-                            </Link>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Sidebar */}
-                <aside className="hidden lg:block">
-                    <div className="sticky top-24 space-y-4">
-                        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                            <h2 className="font-semibold text-gray-900">
-                                Quick links
+                                Your story starts here
                             </h2>
 
-                            <nav className="mt-4 space-y-1">
-                                <Link
-                                    href="/profile"
-                                    className="block rounded-xl px-3 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                                >
-                                    My profile
-                                </Link>
+                            <p className="mx-auto mt-4 max-w-md text-base leading-7 text-[#2B0505]/65">
+                                Your feed is looking a little quiet. Find
+                                people to connect with, follow their updates,
+                                or share something of your own with the Social
+                                Hub community.
+                            </p>
 
+                            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
                                 <Link
                                     href="/search"
-                                    className="block rounded-xl px-3 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#797454]/50 px-7 py-3 text-sm font-semibold text-[#2B0505] transition hover:border-[#797454] hover:bg-[#E1D8CC]"
                                 >
                                     Find people
                                 </Link>
 
                                 <Link
-                                    href="/notifications"
-                                    className="block rounded-xl px-3 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                    href="/create-post"
+                                    className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#797454] px-7 py-3 text-sm font-semibold text-white transition hover:bg-[#686346]"
                                 >
-                                    Notifications
+                                    Share your first post
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Sidebar */}
+                <aside className="min-w-0">
+                    <div className="space-y-5 lg:sticky lg:top-28">
+                        {/* Quick links */}
+                        <div className="rounded-3xl border border-[#797454]/20 bg-[#F5EFE7] p-6 shadow-[0_8px_30px_rgba(43,5,5,0.03)]">
+                            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#797454]">
+                                EXPLORE
+                            </p>
+
+                            <h2
+                                className="text-2xl font-bold text-[#2B0505]"
+                                style={headingFont}
+                            >
+                                Quick links
+                            </h2>
+
+                            <nav className="mt-5 space-y-1">
+                                <Link
+                                    href="/profile"
+                                    className="group flex items-center justify-between rounded-xl px-3 py-3 text-sm text-[#2B0505]/75 transition hover:bg-[#E1D8CC] hover:text-[#2B0505]"
+                                >
+                                    <span>My profile</span>
+                                    <span className="text-lg text-[#797454] transition-transform group-hover:translate-x-1">
+                                        →
+                                    </span>
+                                </Link>
+
+                                <Link
+                                    href="/search"
+                                    className="group flex items-center justify-between rounded-xl px-3 py-3 text-sm text-[#2B0505]/75 transition hover:bg-[#E1D8CC] hover:text-[#2B0505]"
+                                >
+                                    <span>Find people</span>
+                                    <span className="text-lg text-[#797454] transition-transform group-hover:translate-x-1">
+                                        →
+                                    </span>
+                                </Link>
+
+                                <Link
+                                    href="/notifications"
+                                    className="group flex items-center justify-between rounded-xl px-3 py-3 text-sm text-[#2B0505]/75 transition hover:bg-[#E1D8CC] hover:text-[#2B0505]"
+                                >
+                                    <span>Notifications</span>
+                                    <span className="text-lg text-[#797454] transition-transform group-hover:translate-x-1">
+                                        →
+                                    </span>
                                 </Link>
 
                                 <Link
                                     href="/settings"
-                                    className="block rounded-xl px-3 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                    className="group flex items-center justify-between rounded-xl px-3 py-3 text-sm text-[#2B0505]/75 transition hover:bg-[#E1D8CC] hover:text-[#2B0505]"
                                 >
-                                    Settings
+                                    <span>Settings</span>
+                                    <span className="text-lg text-[#797454] transition-transform group-hover:translate-x-1">
+                                        →
+                                    </span>
                                 </Link>
                             </nav>
                         </div>
 
-                        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                            <h2 className="font-semibold text-gray-900">
-                                Social Hub
-                            </h2>
+                        {/* About Social Hub */}
+                        <div className="relative overflow-hidden rounded-3xl bg-[#2B0505] p-6 text-[#F5EFE7] shadow-[0_8px_30px_rgba(43,5,5,0.10)]">
+                            <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full border border-white/10" />
+                            <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full border border-white/10" />
 
-                            <p className="mt-2 text-sm leading-6 text-gray-500">
-                                Share moments, discover people, and stay
-                                connected with your community.
-                            </p>
+                            <div className="relative">
+                                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#C5C0A2]">
+                                    OUR SPACE
+                                </p>
+
+                                <h2
+                                    className="text-3xl font-bold"
+                                    style={headingFont}
+                                >
+                                    Social Hub
+                                </h2>
+
+                                <p className="mt-3 text-sm leading-7 text-[#F5EFE7]/75">
+                                    A place to share moments, discover new
+                                    people, and stay connected with your
+                                    community.
+                                </p>
+
+                                <Link
+                                    href="/search"
+                                    className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#D8D2B5] transition hover:text-white"
+                                >
+                                    Discover your community
+                                    <span aria-hidden="true">→</span>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </aside>
