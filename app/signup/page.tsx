@@ -1,5 +1,3 @@
-// Sign up page
-
 "use client";
 
 import { FormEvent, useState } from "react";
@@ -60,46 +58,32 @@ export default function SignUpPage() {
   }
 
   const inputClassName =
-      "w-full rounded-xl border border-[#D8D2C8] bg-white/95 px-4 py-3 text-[#4E362C] placeholder:text-gray-500 outline-none transition focus:border-[#797454] focus:ring-1 focus:ring-[#797454]";
-
-  const labelClassName =
-      "mb-2 block text-sm font-bold text-[#797454]";
-
-  const labelStyle = {
-    fontFamily: "'Noto Serif Display ExtraC', Georgia, serif",
-  };
+      "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black placeholder:text-gray-500 outline-none transition focus:border-black focus:ring-1 focus:ring-black";
 
   return (
-      <main
-          className="relative flex min-h-screen items-center justify-center bg-cover bg-center bg-fixed px-4 py-10"
-          style={{
-            backgroundImage:
-                "url('https://i.pinimg.com/736x/75/9d/ac/759dac2adc6bc964a40d85bf822278cd.jpg')",
-          }}
-      >
-        <div className="absolute inset-0 bg-black/25" />
-
-        <div className="relative z-10 mx-auto w-full max-w-lg">
+      <main className="min-h-screen bg-gray-50 px-4 py-10">
+        <div className="mx-auto w-full max-w-lg">
           <div className="mb-8 text-center">
-            <h1
-                className="text-5xl font-bold tracking-wide text-[#4E362C]"
-                style={{
-                  fontFamily: "'Calgary', Georgia, serif",
-                  textShadow: "0 1px 12px rgba(255,255,255,0.35)",
-                }}
-            >
-              Social Hub
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-black text-xl font-bold text-white">
+              SH
+            </div>
+
+            <h1 className="text-3xl font-bold text-gray-900">
+              Create your account
             </h1>
+
+            <p className="mt-2 text-gray-500">
+              Join Social Hub and connect with your community.
+            </p>
           </div>
 
-          <div className="rounded-2xl bg-[#FAF8F3]/95 p-6 shadow-2xl ring-1 ring-white/40 backdrop-blur-sm sm:p-8">
+          <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 sm:p-8">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label
                       htmlFor="firstName"
-                      className={labelClassName}
-                      style={labelStyle}
+                      className="mb-2 block text-sm font-medium text-gray-700"
                   >
                     First name
                   </label>
@@ -121,8 +105,7 @@ export default function SignUpPage() {
                 <div>
                   <label
                       htmlFor="lastName"
-                      className={labelClassName}
-                      style={labelStyle}
+                      className="mb-2 block text-sm font-medium text-gray-700"
                   >
                     Last name
                   </label>
@@ -145,8 +128,7 @@ export default function SignUpPage() {
               <div>
                 <label
                     htmlFor="username"
-                    className={labelClassName}
-                    style={labelStyle}
+                    className="mb-2 block text-sm font-medium text-gray-700"
                 >
                   Username
                 </label>
@@ -168,8 +150,7 @@ export default function SignUpPage() {
               <div>
                 <label
                     htmlFor="email"
-                    className={labelClassName}
-                    style={labelStyle}
+                    className="mb-2 block text-sm font-medium text-gray-700"
                 >
                   Email
                 </label>
@@ -191,8 +172,7 @@ export default function SignUpPage() {
               <div>
                 <label
                     htmlFor="password"
-                    className={labelClassName}
-                    style={labelStyle}
+                    className="mb-2 block text-sm font-medium text-gray-700"
                 >
                   Password
                 </label>
@@ -215,8 +195,7 @@ export default function SignUpPage() {
               <div>
                 <label
                     htmlFor="confirmPassword"
-                    className={labelClassName}
-                    style={labelStyle}
+                    className="mb-2 block text-sm font-medium text-gray-700"
                 >
                   Confirm password
                 </label>
@@ -239,8 +218,7 @@ export default function SignUpPage() {
               <div>
                 <label
                     htmlFor="dateOfBirth"
-                    className={labelClassName}
-                    style={labelStyle}
+                    className="mb-2 block text-sm font-medium text-gray-700"
                 >
                   Date of birth
                 </label>
@@ -256,7 +234,7 @@ export default function SignUpPage() {
                     className={inputClassName}
                 />
 
-                <p className="mt-2 text-xs text-[#4E362C]/75">
+                <p className="mt-2 text-xs text-gray-500">
                   You must be at least 13 years old to use Social Hub.
                 </p>
               </div>
@@ -270,17 +248,17 @@ export default function SignUpPage() {
               <button
                   type="submit"
                   disabled={loading}
-                  className="w-full rounded-xl bg-[#4E362C] px-6 py-3.5 font-semibold text-white transition hover:bg-[#39271F] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full rounded-xl bg-black px-6 py-3.5 font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? "Creating account..." : "Create account"}
               </button>
             </form>
 
-            <div className="mt-6 border-t border-[#D8D2C8] pt-6 text-center text-sm text-[#4E362C]">
+            <div className="mt-6 border-t border-gray-100 pt-6 text-center text-sm text-gray-500">
               Already have an account?{" "}
               <Link
                   href="/signin"
-                  className="font-bold text-[#797454] hover:underline"
+                  className="font-semibold text-gray-900 hover:underline"
               >
                 Sign in
               </Link>
